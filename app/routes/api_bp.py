@@ -1,28 +1,30 @@
-from flask import blueprints, jsonify
+from flask import Blueprint, jsonify
 
-from models import categoria, produto, usuario
+from app.models import Categoria, Produto, Usuario
 
-api_bp = blueprints('api',__name__,url_prefixe="/api")
 
-@api_bp.route("/produtos",methods = ["GET"])
+api_bp = Blueprint('api', __name__, url_prefix="/api")
+
+@api_bp.route("/produtos", methods=["GET"])
 def get_produtos():
-    produtos = produto.query.all()
+    produtos = Produto.query.all()
 
-    lista_json = (produto.to_dict() for produto in produtos)
+    lista_json = [produto.to_dict() for produto in produtos]
 
-    return jsonify(lista_json),200
+    return jsonify(lista_json), 200
 
-@api_bp.route("/categorias",methods = ["GET"])
+
+@api_bp.route("/categorias", methods=["GET"])
 def get_categorias():
-    categorias = categoria.query.all()
-    lista_json = {categoria.to_dict() for categoria in categorias}
+    categorias = Categoria.query.all()
 
-    return jsonify(lista_json),200
+    lista_json = [categoria.to_dict() for categoria in categorias]
 
-@api_bp.route("/usuarios",methods=["GET"])
+    return jsonify(lista_json), 200
+
+
+@api_bp.route("/usuarios", methods=["GET"])
 def get_usuarios():
-    usuarios = usuario.query.all()
-
-    lista_json = {usuario.to_dict() for usuario in usuarios}
-
-    return jsonify(lista_json),200
+    usuarios = Usuario.query.all()
+    lista_json = [usuario.to_dict() for usuario in usuarios]
+    return jsonify(lista_json), 200
